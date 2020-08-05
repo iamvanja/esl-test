@@ -1,41 +1,62 @@
-import React from 'react';
-import { EntitySelectorList } from '@gpsi/entitySelectorList';
+import React, { Component } from 'react';
+import { EntitySelectorList, PropTypes as EntitySelectorListPropTypes } from '@gpsi/entitySelectorList';
 import {SECONDARY_TYPES} from '@gpsi/entitySelectorList/types';
 import data from './data.json';
 import Person from './Person'
 
+const Foo = () => <div>FOO</div>
 
-const PersonList = () => {
-  return (
+class PersonList extends Component<{}, StateTypes> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      searchTerm: '',
+    };
+  }
+
+  handleSearchTermChange = (newVal: string): void => {
+    this.setState({ searchTerm: newVal });
+  };
+
+  handleGetFilteredItems = (items) => {
+    const { searchTerm } = this.state;
+    const searchTermLowerCase = (searchTerm || '').toLowerCase();
+
+    if (!searchTerm) {
+      return items;
+    }
+
+    return items.filter((item) =>
+      (item.firstName || '').toLowerCase().includes(searchTermLowerCase) || 
+      (item.lastName || '').toLowerCase().includes(searchTermLowerCase)
+    );
+  };
+
+  render() {
+    const { searchTerm } = this.state;
+
+    return (
       <EntitySelectorList
         data={data}
-        primaryEntity={'FOO'}
+        primaryEntity="FOO"
         secondaryEntity={SECONDARY_TYPES.CATEGORY_ALL}
         itemComponent={Person}
-        // scrollToSelectedItem={scrollToSelectedItem}
-        // onItemClick={onItemClick}
-        // groupItemComponent={EntitySelectorItemGroup}
-        // onLevelChange={onLevelChange}
-        // searchKey={searchKey}
-        // childrenKey={childrenKey}
-        // lastLevelKey={lastLevelKey}
-        // singleIdKey={getSingleIdKey(primaryEntity, secondaryEntity)}
-        // itemHeightSingle={getItemHeight(primaryEntity)}
-        // getItemData={getItemData}
-        // filterComponent={isActive(FeatureKey.mapEssFiltering)
-        //   ? getFilterComponent(primaryEntity, secondaryEntity)
-        //   : null}
-        // filterFunction={getFilterFunction(primaryEntity, secondaryEntity)}
-        // filters={filters}
-        // isFilterApplied={this.isFilterApplied}
-        // getFilteredItems={this.handleGetFilteredItems}
-        // onFilterChange={this.handleFilterChange}
-        // searchTerm={searchTerm}
-        // onSearchTermChange={this.handleSearchTermChange}
-        // mapIdsToObjects={this.mapIdsToObjects}
-        // getTagContent={getTagContent}
-        />
-  );
+        groupItemComponent={Foo}
+        onLevelChange={null}
+        itemHeightSingle={58}
+        filterComponent={Foo}
+        getFilteredItems={this.handleGetFilteredItems}
+        searchTerm={searchTerm}
+        onSearchTermChange={this.handleSearchTermChange}
+        getTagContent={() => <div>tag</div>}
+      />
+    );
+  }
+}
+
+type StateTypes = {
+  searchTerm: EntitySelectorListPropTypes['searchTerm'];
 }
 
 export default PersonList;

@@ -1,8 +1,16 @@
 import React from 'react';
 
-const Person = (props) => {
+const Person = ({
+  firstName,
+  lastName,
+  id,
+  email
+}) => {
   return (
-    <div>{JSON.stringify(props, null, 2)}</div>
+    <div className="person-item">
+      {id}: {firstName} {lastName} {''}
+      <div>{email}</div>
+    </div>
   );
 }
 
