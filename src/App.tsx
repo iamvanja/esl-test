@@ -1,10 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import classnames from 'classnames';
+import PersonList from './components/entity-selector';
 
 function App() {
   return (
-    <div className="App">
+    <div className={classnames("App")}>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -19,6 +21,8 @@ function App() {
           Learn React
         </a>
       </header>
+
+      <PersonList />
     </div>
   );
 }
