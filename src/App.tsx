@@ -1,5 +1,5 @@
 import React from 'react';
-import PersonList from './components/entity-selector';
+import PersonList from './components/person-list';
 
 function App() {
   return (
